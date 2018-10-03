@@ -44,13 +44,11 @@ def newticket():
                           updated_by = current_user.id
                           )
       db.session.add(theticket)
+      db.session.flush()
+      ticket_id =  theticket.id
       db.session.commit()
-      
-      from ticket import app
-      cipher = AES.new(app.secret_key,AES.MODE_ECB)
-      encoded = base64.b64encode(cipher.encrypt(str(theticket)))
 
-      return redirect(url_for('main.genticket',data=encoded),code=55)
+      return redirect(url_for('main.genticket',data=ticket_id),code=307)
     else:
       flask("Người này đã mua vé rồi")
 
@@ -61,8 +59,20 @@ def newticket():
 def genticket():
   # TODO: 
   from ticket import app
+  import math
   cipher = AES.new(app.secret_key,AES.MODE_ECB)
-  encoded = request.data.get('data')
-  decoded = cipher.decrypt(base64.b64decode(encoded))
+  theticket = Ticket.query.filter_by(id=request.args['data']).first()
+  str_len = len(str(theticket))
+  ticket_string = str(theticket).rjust(math.ceil(str_len/32)*32)
 
-  return render_template('ticket/new.html', message=decoded)
+  cipher = AES.new(app.secret_key,AES.MODE_ECB)
+  encoded = base64.b64encode(cipher.encrypt(ticket_string))
+  import qrcode
+  image = qrcode.make(encoded)
+  from io import BytesIO
+
+  buffered = BytesIO()
+  image.save(buffered, format="JPEG")
+  img_str = base64.b64encode(buffered.getvalue())
+
+  return render_template('ticket/generate.html', message=img_str)

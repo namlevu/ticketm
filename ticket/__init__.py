@@ -7,7 +7,7 @@ from flask_login import LoginManager
 app = Flask(__name__)
 
 
-app.secret_key = b'conmeongo1234'
+app.secret_key = b'www.namvl.com@ln'
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
