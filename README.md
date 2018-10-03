@@ -32,3 +32,5 @@ flask db upgrade
 ---
 install flask login 
 pip install flask-login
+pip install Flask-WTF
+pip install Flask-Babel

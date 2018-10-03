@@ -1,0 +1,31 @@
+{# _ticket/templates/home/index.html_ #}
+
+{% extends "layout.html" %}
+{% block title %}Khi có người đặt vé thì nhập thông tin ở đây{% endblock %}
+{% block body %}
+    {{ super() }}
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.buyer_email.label }}<br>
+            {{ form.buyer_email(size=128) }}
+        </p>
+        <p>
+            {{ form.buyer_tel.label }}<br>
+            {{ form.buyer_tel(size=32) }}
+        </p>
+        <p>
+            {{ form.quanlity.label }}<br>
+            {{ form.quanlity }}
+        </p>
+        <p>
+            {{ form.amount.label }}<br>
+            {{ form.amount }}
+        </p>
+        <p>
+            {{ form.note.label }}<br>
+            {{ form.note }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

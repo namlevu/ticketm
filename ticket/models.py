@@ -28,13 +28,16 @@ class Ticket(db.Model):
   buyer_email = db.Column(db.String(128), index=True, unique=True)
   buyer_tel = db.Column(db.String(16))
   quanlity = db.Column(db.Integer)
-  bought_at = db.Column(db.DateTime())
   amount = db.Column(db.Integer)
   deleted = db.Column(db.Boolean)
   deleted_at = db.Column(db.DateTime())
   created_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
   updated_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+  created_at = db.Column(db.DateTime())
+  updated_at = db.Column(db.DateTime())
   note = db.Column(db.String(512))
 
   def __repr__(self):
-    return '<Ticket {}><email/phone {}/{}><quanlity/amount {}/{}>'.format(self.id, self.buyer_email, self.buyer_tel, self.quanlity, self.amount)
+    return 'id:{}, buyer_email:{}, buyer_tel:{}, quanlity:{}, amount:{}>'.format(self.id, self.buyer_email, self.buyer_tel, self.quanlity, self.amount)
+  def __str__(self):
+    return 'id:{}, buyer_email:{}, buyer_tel:{}, quanlity:{}, amount:{}>'.format(self.id, self.buyer_email, self.buyer_tel, self.quanlity, self.amount)
