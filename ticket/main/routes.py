@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, send_file
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from datetime import datetime
@@ -72,7 +72,12 @@ def genticket():
   from io import BytesIO
 
   buffered = BytesIO()
-  image.save(buffered, format="JPEG")
-  img_str = base64.b64encode(buffered.getvalue())
+  image.save(buffered, format="PNG")
+  buffered.seek(0)
 
-  return render_template('ticket/generate.html', message=img_str)
+  #return render_template('ticket/generate.html', message=img_str)
+  return send_file(buffered, mimetype='image/png')
+
+
+
+
