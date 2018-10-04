@@ -7,7 +7,7 @@ import base64
 import uuid
 
 from ticket.main import bp
-from ticket import db
+from ticket import db, app
 from ticket.main.forms import NewTicketForm
 from ticket.models import Ticket
 
@@ -61,8 +61,22 @@ def newticket():
 @login_required
 def genticket():
   # TODO: 
-
+  import math
+  cipher = AES.new(app.secret_key,AES.MODE_ECB)
   theticket = Ticket.query.filter_by(unique_id=request.args['data']).first()
-  
+  str_len = len(str(theticket))
+  ticket_string = str(theticket).rjust(math.ceil(str_len/32)*32)
 
-  return render_template('ticket/generate.html', message=str(theticket))
+  encoded = base64.b64encode(cipher.encrypt(ticket_string))
+
+  return render_template('ticket/generate.html', message=img_str)
+
+@bp.route('/ticket/validate', methods=['GET', 'POST'])
+def ticketvalidate():
+  key = request.args['key']
+  if key is None or len(key) == 0 :
+    return render_template('ticket/validate.html', message="Ticket key is invalid.")
+  cipher = AES.new(app.secret_key,AES.MODE_ECB)
+  decoded = cipher.decrypt(base64.b64decode(encoded))
+  
+  return render_template('ticket/validate.html', message=decoded)
