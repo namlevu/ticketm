@@ -6,3 +6,7 @@ migrations/
 */*/*/__pycache__/
 app.db
 *.pyc
+
+*/*/.DS_Store
+*/.DS_Store
+.DS_Store
