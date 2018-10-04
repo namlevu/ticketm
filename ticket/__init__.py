@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_qrcode import QRcode
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 
@@ -14,6 +15,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'auth.login'
+Bootstrap(app)
 QRcode(app)
 
 from ticket.auth import bp as auth_bp
