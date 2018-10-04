@@ -34,3 +34,9 @@ install flask login
 pip install flask-login
 pip install Flask-WTF
 pip install Flask-Babel
+
+
+-- for gen qr code
+pip install Flask-QRcode
+
+pip install Flask-Bootstrap

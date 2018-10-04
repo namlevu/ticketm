@@ -1,0 +1,16 @@
+{# _ticket/templates/home/index.html_ #}
+
+{% extends "layout.html" %}
+{% block title %}Ticket validate{% endblock %}
+{% block body %}
+    {{ super() }}
+    <h2>Ticket valid</h2>
+    <p>Message: 
+    	{{ message }}
+    </p>
+    {% if ticket is defined %}
+        customer email: {{ ticket.buyer_email }}
+    {% else %}
+        ticket is not defined
+    {% endif %}
+{% endblock %}

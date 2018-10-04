@@ -1,11 +1,14 @@
 {# _ticket/templates/home/index.html_ #}
 
 {% extends "layout.html" %}
-{% block title %}Khi có người đặt vé thì nhập thông tin ở đây{% endblock %}
+{% block title %}ticket generate{% endblock %}
 {% block body %}
     {{ super() }}
     <h2>ticket generate</h2>
-    <p>Message: 
-    	<img src="data:image/jpeg;base64,{{ message }}"  />
+    <p>
+        <img src="{{ qrcode(message) }}">
+    </p>
+    <p>To validate this ticket: 
+    	<a href="{{ message }}">Link to check</a>{{ message }}
     </p>
 {% endblock %}

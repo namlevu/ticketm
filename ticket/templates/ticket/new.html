@@ -1,14 +1,24 @@
 {# _ticket/templates/home/index.html_ #}
 
 {% extends "layout.html" %}
-{% block title %}Khi có người đặt vé thì nhập thông tin ở đây{% endblock %}
-{% block body %}
-    {{ super() }}
+{% import "bootstrap/utils.html" as utils %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <a href="{{ url_for('main.index') }}">Home</a>
+    {% if current_user.is_anonymous %}
+    <a href="{{ url_for('auth.login') }}">Login</a>
+    {% else %}
+    <a href="{{ url_for('auth.logout') }}">Logout</a>
+    {% endif %}
+  </div>
+  <div class="row">
+    <div class="col-md-12">
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
             {{ form.buyer_email.label }}<br>
-            {{ form.buyer_email(size=128) }}
+            {{ form.buyer_email(size=64) }}
         </p>
         <p>
             {{ form.buyer_tel.label }}<br>
@@ -28,4 +38,8 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
-{% endblock %}
+    </div>
+  </div>
+</div>
+    
+{%- endblock %}

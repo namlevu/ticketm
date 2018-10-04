@@ -1,12 +1,11 @@
-from flask import render_template, redirect, url_for, flash, request, send_file
+from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from datetime import datetime
-from Crypto.Cipher import AES
-import base64
+import uuid
 
 from ticket.main import bp
-from ticket import db
+from ticket import db, app
 from ticket.main.forms import NewTicketForm
 from ticket.models import Ticket
 
@@ -33,7 +32,9 @@ def newticket():
   if form.validate_on_submit():
     theticket = Ticket.query.filter_by(buyer_email=form.buyer_email.data).first()
     if theticket is None:
-      theticket = Ticket(buyer_email=form.buyer_email.data, 
+      theticket = Ticket(
+                          unique_id = str(uuid.uuid4().hex),
+                          buyer_email=form.buyer_email.data, 
                           buyer_tel= form.buyer_tel.data, 
                           quanlity= form.quanlity.data, 
                           amount= form.amount.data, 
@@ -45,7 +46,7 @@ def newticket():
                           )
       db.session.add(theticket)
       db.session.flush()
-      ticket_id =  theticket.id
+      ticket_id =  theticket.unique_id
       db.session.commit()
 
       return redirect(url_for('main.genticket',data=ticket_id),code=307)
@@ -58,26 +59,22 @@ def newticket():
 @login_required
 def genticket():
   # TODO: 
-  from ticket import app
-  import math
-  cipher = AES.new(app.secret_key,AES.MODE_ECB)
-  theticket = Ticket.query.filter_by(id=request.args['data']).first()
-  str_len = len(str(theticket))
-  ticket_string = str(theticket).rjust(math.ceil(str_len/32)*32)
+  ticket_id = request.args['data']
+  theticket = Ticket.query.filter_by(unique_id=ticket_id).first()
+  if theticket is None:
+    abort(404)
 
-  cipher = AES.new(app.secret_key,AES.MODE_ECB)
-  encoded = base64.b64encode(cipher.encrypt(ticket_string))
-  import qrcode
-  image = qrcode.make(encoded)
-  from io import BytesIO
+  url = request.url_root + 'ticket/validate?key=' + ticket_id
 
-  buffered = BytesIO()
-  image.save(buffered, format="PNG")
-  buffered.seek(0)
+  return render_template('ticket/generate.html', validate_url=url)
 
-  #return render_template('ticket/generate.html', message=img_str)
-  return send_file(buffered, mimetype='image/png')
+@bp.route('/ticket/validate', methods=['GET', 'POST'])
+def ticketvalidate():
+  keyword = request.args['key']
+  if keyword is None or len(keyword) == 0 :
+    return render_template('ticket/validate.html', message="Ticket key is invalid.")
+  theticket = Ticket.query.filter_by(unique_id=keyword).first()
+  if theticket is None:
+    return render_template('ticket/validate.html', message="Ticket key is invalid.")
 
-
-
-
+  return render_template('ticket/validate.html', message=keyword, ticket=theticket)
