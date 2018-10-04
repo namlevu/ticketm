@@ -48,7 +48,7 @@ def newticket():
                           )
       db.session.add(theticket)
       db.session.flush()
-      ticket_id =  theticket.id
+      ticket_id =  theticket.unique_id
       db.session.commit()
 
       return redirect(url_for('main.genticket',data=ticket_id),code=307)
@@ -64,7 +64,7 @@ def genticket():
   from ticket import app
   import math
   cipher = AES.new(app.secret_key,AES.MODE_ECB)
-  theticket = Ticket.query.filter_by(id=request.args['data']).first()
+  theticket = Ticket.query.filter_by(unique_id=request.args['data']).first()
   str_len = len(str(theticket))
   ticket_string = str(theticket).rjust(math.ceil(str_len/32)*32)
 
