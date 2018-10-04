@@ -77,6 +77,6 @@ def ticketvalidate():
   if key is None or len(key) == 0 :
     return render_template('ticket/validate.html', message="Ticket key is invalid.")
   cipher = AES.new(app.secret_key,AES.MODE_ECB)
-  decoded = cipher.decrypt(base64.b64decode(encoded))
+  decoded = cipher.decrypt(base64.b64decode(key))
   
-  return render_template('ticket/validate.html', message=decoded)
+  return render_template('ticket/validate.html', message=str(decoded))
