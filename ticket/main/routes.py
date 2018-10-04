@@ -69,7 +69,7 @@ def genticket():
 
   encoded = base64.b64encode(cipher.encrypt(ticket_string))
 
-  return render_template('ticket/generate.html', message=img_str)
+  return render_template('ticket/generate.html', message=encoded)
 
 @bp.route('/ticket/validate', methods=['GET', 'POST'])
 def ticketvalidate():
