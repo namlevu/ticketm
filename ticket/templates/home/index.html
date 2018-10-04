@@ -1,8 +1,27 @@
 {# _ticket/templates/home/index.html_ #}
 
 {% extends "layout.html" %}
-{% block title %}Hello world!{% endblock %}
-{% block body %}
-    {{ super() }}
-    <h2>This is Home/index.</h2>
-{% endblock %}
+{% import "bootstrap/utils.html" as utils %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <a href="{{ url_for('main.index') }}">Home</a>
+      {% if current_user.is_anonymous %}
+      <a href="{{ url_for('auth.login') }}">Login</a>
+      {% else %}
+      <a href="{{ url_for('auth.logout') }}">Logout</a>
+      {% endif %}
+    </div>
+    <div class="jumbotron">
+      <p>
+          message from head
+      </p>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <a href="{{ url_for('main.newticket') }}">New ticket</a>
+      </div>
+    </div>
+  </div> <!-- end container-->
+
+{%- endblock %}

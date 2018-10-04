@@ -4,18 +4,31 @@
 {% block title %}Hello world!{% endblock %}
 {% block body %}
     {{ super() }}
-    <h1>Sign In</h1>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}
-        </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit() }}</p>
-    </form>
+    <div class="container">
+        <h1 class="form-heading">Ticket Management System</h1>
+        <div class="login-form">
+            <div class="main-div">
+                <div class="panel">
+                    <h2>Admin Login</h2>
+                    <p>Please enter your username and password</p>
+                </div>
+                <form id="Login">
+                    <div class="form-group">
+                        <!-- input type="email" class="form-control" id="inputEmail" placeholder="Email Address" -->
+                        {{ form.username(size=32) }}
+                    </div>
+                    <div class="form-group">
+                        <!-- <input type="password" class="form-control" id="inputPassword" placeholder="Password"> -->
+                        {{ form.password(size=32) }}
+                    </div>
+                    <div class="forgot">
+                        <a href="reset.html">Forgot password?</a>
+                        {{ form.remember_me() }} {{ form.remember_me.label }}
+                    </div>
+                    {{ form.submit() }}
+                </form>
+            </div>
+            <p class="botto-text"> Nam V L </p>
+        </div>
+    </div>
 {% endblock %}

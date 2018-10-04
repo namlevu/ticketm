@@ -1,22 +1,15 @@
-{# _tickect/templates/layout.html_ #}
+{%- extends "bootstrap/base.html" %}
+{% block title %}Ticket management system{% endblock %}
+{% import "bootstrap/fixes.html" as fixes %}
+{% block head %}
+    {{super()}}
+    {{fixes.ie8()}}
+{%- endblock %}
+{% block styles -%}
+    {{super()}}
+    <link rel="stylesheet" type="text/css"
+            href="{{url_for('static', filename='style.css')}}">
+{% endblock %}
 
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>{% block title %}{% endblock %}</title>
-    </head>
-    <body>
-    <div>
-        Microblog:
-        <a href="{{ url_for('main.index') }}">Home</a>
-        {% if current_user.is_anonymous %}
-        <a href="{{ url_for('auth.login') }}">Login</a>
-        {% else %}
-        <a href="{{ url_for('auth.logout') }}">Logout</a>
-        {% endif %}
-    </div>
-    {% block body %}
-        <h1>This heading is defined in the parent.</h1>
-    {% endblock %}
-    </body>
-</html>
+{% block navbar %}
+{% endblock %}
