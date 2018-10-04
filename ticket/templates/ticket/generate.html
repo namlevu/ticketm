@@ -5,7 +5,10 @@
 {% block body %}
     {{ super() }}
     <h2>ticket generate</h2>
+    <p>
+        <img src="{{ qrcode(message) }}">
+    </p>
     <p>To validate this ticket: 
-    	<a href="{{ url_for('main.ticketvalidate') }}?key={{ message }}">Home</a>{{ message }}
+    	<a href="{{ message }}">Link to check</a>{{ message }}
     </p>
 {% endblock %}

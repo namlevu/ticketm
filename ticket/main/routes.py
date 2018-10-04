@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from datetime import datetime
@@ -10,6 +10,7 @@ from ticket.main import bp
 from ticket import db, app
 from ticket.main.forms import NewTicketForm
 from ticket.models import Ticket
+from ticket.libs.cryptor import AESCipher
 
 @bp.before_app_request
 def before_request():
@@ -61,21 +62,22 @@ def newticket():
 @login_required
 def genticket():
   # TODO: 
-  import math
-  cipher = AES.new(app.secret_key,AES.MODE_ECB)
-  theticket = Ticket.query.filter_by(unique_id=request.args['data']).first()
-  ticket_str= theticket.unique_id + ',' + '{:16s}'.format(str(theticket.buyer_tel)) + ',' + '{:2s}'.format(str(theticket.quanlity)) + ','+ str(theticket.paid)[0] + ',' + '{:19s}'.format(theticket.note)
-  
-  encoded = base64.b64encode(cipher.encrypt('{:64s}'.format(ticket_str)))
+  ticket_id = request.args['data']
+  theticket = Ticket.query.filter_by(unique_id=ticket_id).first()
+  if theticket is None:
+    abort(404)
 
-  return render_template('ticket/generate.html', message=encoded)
+  url = request.url_root + 'ticket/validate?key=' + ticket_id
+
+  return render_template('ticket/generate.html', message=url)
 
 @bp.route('/ticket/validate', methods=['GET', 'POST'])
 def ticketvalidate():
-  key = request.args['key']
-  if key is None or len(key) == 0 :
+  keyword = request.args['key']
+  if keyword is None or len(keyword) == 0 :
     return render_template('ticket/validate.html', message="Ticket key is invalid.")
-  cipher = AES.new(app.secret_key,AES.MODE_ECB)
-  decoded = cipher.decrypt(base64.b64decode('{:128s}'.format(key)))
-  
-  return render_template('ticket/validate.html', message=str(decoded))
+  theticket = Ticket.query.filter_by(unique_id=keyword).first()
+  if theticket is None:
+    return render_template('ticket/validate.html', message="Ticket key is invalid.")
+
+  return render_template('ticket/validate.html', message=keyword, ticket=theticket)
