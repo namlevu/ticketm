@@ -4,6 +4,7 @@ from flask_babel import _, get_locale
 from datetime import datetime
 from Crypto.Cipher import AES
 import base64
+import uuid
 
 from ticket.main import bp
 from ticket import db
@@ -33,7 +34,9 @@ def newticket():
   if form.validate_on_submit():
     theticket = Ticket.query.filter_by(buyer_email=form.buyer_email.data).first()
     if theticket is None:
-      theticket = Ticket(buyer_email=form.buyer_email.data, 
+      theticket = Ticket(
+                          unique_id = str(uuid.uuid4().hex),
+                          buyer_email=form.buyer_email.data, 
                           buyer_tel= form.buyer_tel.data, 
                           quanlity= form.quanlity.data, 
                           amount= form.amount.data, 
