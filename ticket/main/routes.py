@@ -29,28 +29,24 @@ def index():
 def newticket():
   form = NewTicketForm()
   if form.validate_on_submit():
-    theticket = Ticket.query.filter_by(buyer_email=form.buyer_email.data).first()
-    if theticket is None:
-      theticket = Ticket(
-                          unique_id = str(uuid.uuid4().hex),
-                          buyer_email=form.buyer_email.data, 
-                          buyer_tel= form.buyer_tel.data, 
-                          quanlity= form.quanlity.data, 
-                          amount= form.amount.data, 
-                          note= form.note.data, 
-                          created_at = datetime.utcnow(),
-                          updated_at = datetime.utcnow(),
-                          created_by = current_user.id,
-                          updated_by = current_user.id
-                          )
-      db.session.add(theticket)
-      db.session.flush()
-      ticket_id =  theticket.unique_id
-      db.session.commit()
+    theticket = Ticket(
+                        unique_id = str(uuid.uuid4().hex),
+                        buyer_email=form.buyer_email.data, 
+                        buyer_tel= form.buyer_tel.data, 
+                        quanlity= form.quanlity.data, 
+                        amount= form.amount.data, 
+                        note= form.note.data, 
+                        created_at = datetime.utcnow(),
+                        updated_at = datetime.utcnow(),
+                        created_by = current_user.id,
+                        updated_by = current_user.id
+                        )
+    db.session.add(theticket)
+    db.session.flush()
+    ticket_id =  theticket.unique_id
+    db.session.commit()
 
-      return redirect(url_for('main.genticket',data=ticket_id),code=307)
-    else:
-      flask("Người này đã mua vé rồi")
+    return redirect(url_for('main.genticket',data=ticket_id),code=307)
 
   return render_template('ticket/new.html', form=form)
 
