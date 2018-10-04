@@ -5,7 +5,7 @@
 {% block body %}
     {{ super() }}
     <h2>ticket generate</h2>
-    <p>Message: 
-    	{{ message }}
+    <p>To validate this ticket: 
+    	<a href="{{ url_for('main.ticketvalidate') }}/key={{ message }}">Home</a>{{ message }}
     </p>
 {% endblock %}
