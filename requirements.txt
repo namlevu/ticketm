@@ -1,2 +1,7 @@
 Flask
 flask-login-0.4.1
+Flask-WTF
+Flask-Babel
+Flask-QRcode
+flask-sqlalchemy
+flask-migrate
