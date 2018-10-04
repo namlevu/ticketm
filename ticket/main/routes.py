@@ -2,15 +2,12 @@ from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from datetime import datetime
-from Crypto.Cipher import AES
-import base64
 import uuid
 
 from ticket.main import bp
 from ticket import db, app
 from ticket.main.forms import NewTicketForm
 from ticket.models import Ticket
-from ticket.libs.cryptor import AESCipher
 
 @bp.before_app_request
 def before_request():
