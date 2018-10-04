@@ -66,7 +66,7 @@ def genticket():
   theticket = Ticket.query.filter_by(unique_id=request.args['data']).first()
   ticket_str= theticket.unique_id + ',' + '{:16s}'.format(str(theticket.buyer_tel)) + ',' + '{:2s}'.format(str(theticket.quanlity)) + ','+ str(theticket.paid)[0] + ',' + '{:19s}'.format(theticket.note)
   
-  encoded = base64.b64encode(cipher.encrypt(':64s'.format(ticket_str)))
+  encoded = base64.b64encode(cipher.encrypt('{:64s}'.format(ticket_str)))
 
   return render_template('ticket/generate.html', message=encoded)
 
@@ -76,6 +76,6 @@ def ticketvalidate():
   if key is None or len(key) == 0 :
     return render_template('ticket/validate.html', message="Ticket key is invalid.")
   cipher = AES.new(app.secret_key,AES.MODE_ECB)
-  decoded = cipher.decrypt(base64.b64decode(':128s'.format(key)))
+  decoded = cipher.decrypt(base64.b64decode('{:128s}'.format(key)))
   
   return render_template('ticket/validate.html', message=str(decoded))
