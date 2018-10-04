@@ -61,21 +61,8 @@ def newticket():
 @login_required
 def genticket():
   # TODO: 
-  from ticket import app
-  import math
-  cipher = AES.new(app.secret_key,AES.MODE_ECB)
+
   theticket = Ticket.query.filter_by(unique_id=request.args['data']).first()
-  str_len = len(str(theticket))
-  ticket_string = str(theticket).rjust(math.ceil(str_len/32)*32)
+  
 
-  cipher = AES.new(app.secret_key,AES.MODE_ECB)
-  encoded = base64.b64encode(cipher.encrypt(ticket_string))
-  import qrcode
-  image = qrcode.make(encoded)
-  from io import BytesIO
-
-  buffered = BytesIO()
-  image.save(buffered, format="JPEG")
-  img_str = base64.b64encode(buffered.getvalue())
-
-  return render_template('ticket/generate.html', message=img_str)
+  return render_template('ticket/generate.html', message=str(theticket))
