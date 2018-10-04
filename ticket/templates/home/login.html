@@ -12,7 +12,8 @@
                     <h2>Admin Login</h2>
                     <p>Please enter your username and password</p>
                 </div>
-                <form id="Login">
+                <form id="Login" action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
                     <div class="form-group">
                         <!-- input type="email" class="form-control" id="inputEmail" placeholder="Email Address" -->
                         {{ form.username(size=32) }}

@@ -6,9 +6,9 @@
     {{ super() }}
     <h2>ticket generate</h2>
     <p>
-        <img src="{{ qrcode(message) }}">
+        <img src="{{ qrcode(validate_url) }}">
     </p>
     <p>To validate this ticket: 
-    	<a href="{{ message }}">Link to check</a>{{ message }}
+    	<a href="{{ validate_url }}">Link to check</a>
     </p>
 {% endblock %}
