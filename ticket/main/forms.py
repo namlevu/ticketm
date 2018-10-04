@@ -9,6 +9,6 @@ class NewTicketForm(FlaskForm):
   quanlity = IntegerField('Số lượng vé')
   amount = IntegerField('Tổng tiền')
   note = TextAreaField('Ghi chú')
-  submit = SubmitField('Created')
+  submit = SubmitField('Tạo vé')
 
   

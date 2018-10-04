@@ -24,7 +24,6 @@ def index():
   # Do some stuff
   return render_template('home/index.html')
 
-
 @bp.route('/ticket/new', methods=['GET', 'POST'])
 @login_required
 def newticket():
