@@ -25,11 +25,11 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 from ticket import models
----
+--
 run "flask db init"
 flask db migrate -m "users table"
 flask db upgrade
----
+--
 install flask login 
 pip install flask-login
 pip install Flask-WTF
@@ -38,5 +38,10 @@ pip install Flask-Babel
 
 -- for gen qr code
 pip install Flask-QRcode
-
 pip install Flask-Bootstrap
+
+-- for run in bluemix
+add Profile -> khai bao de biet chay command nao
+manifest.yml -> thong tin cua app
+requirement -> nhung library can thiet phai install
+runtime -> phien ban cua python (hien gio bluemix support den 3.6.4)
